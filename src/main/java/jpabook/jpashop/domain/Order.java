@@ -17,33 +17,28 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "ORDERS")
-public class Order {
+public class Order extends BaseEntity {
 
+    @OneToMany(mappedBy = "order")
+    private final List<OrderItem> orderItems = new ArrayList<>();
     @Id
     @GeneratedValue
     @Column(name = "ORDER_ID")
     private Long id;
-
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
-
     @OneToOne
     @JoinColumn(name = "DELIVERY_ID")
     private Delivery delivery;
-
-    @OneToMany(mappedBy = "order")
-    private List<OrderItem> orderItems = new ArrayList<>();
+    private LocalDateTime orderDate;
+    @Enumerated(EnumType.ORDINAL)
+    private OrderStatus status;
 
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
         orderItem.setOrder(this);
     }
-
-    private LocalDateTime orderDate;
-
-    @Enumerated(EnumType.ORDINAL)
-    private OrderStatus status;
 
     public Long getId() {
         return id;

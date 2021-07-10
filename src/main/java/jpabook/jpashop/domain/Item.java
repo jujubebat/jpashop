@@ -6,21 +6,23 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
 
 @Entity
-public class Item {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+public abstract class Item extends BaseEntity {
 
-    @Id @GeneratedValue
+    @ManyToMany(mappedBy = "items")
+    private final List<Category> categories = new ArrayList<>();
+    @Id
+    @GeneratedValue
     @Column(name = "ITEM_ID")
     private Long id;
-
     private String name;
     private int price;
     private int stockQuantity;
-
-    @ManyToMany(mappedBy = "items")
-    private List<Category> categories = new ArrayList<>();
 
     public Long getId() {
         return id;

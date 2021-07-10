@@ -9,18 +9,18 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Member {
+public class Member extends BaseEntity {
 
-    @Id @GeneratedValue
+    @OneToMany(mappedBy = "member")
+    private final List<Order> order = new ArrayList<>();
+    @Id
+    @GeneratedValue
     @Column(name = "MEMBER_ID")
     private Long id;
     private String name;
     private String city;
     private String street;
     private String zipcode;
-
-    @OneToMany(mappedBy = "member")
-    private List<Order> order = new ArrayList<>();
 
     public Long getId() {
         return id;
